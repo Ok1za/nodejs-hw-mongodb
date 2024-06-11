@@ -5,8 +5,9 @@ export const errorHandler = async (err, req, res) => {
         res.status(err.status).json({
             status: err.status,
             message: err.name,
-            data: err,
+            data: { message: err.message },
         });
+        return;
     };
 
     res.status(500).json({
