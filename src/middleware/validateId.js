@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
 import { Types } from "mongoose";
 
-export const validateId = (req, res, next) => (idName = 'id') => {
+export const validateId = (idName = 'id') => (req, res, next) => {
     const id = req.params[idName];
 
     if (!id) {
