@@ -26,6 +26,7 @@ export const getContactsController = async (req, res, next) => {
         });
     } catch (err) {
         next(err);
+        return;
     }
 };
 
@@ -49,6 +50,7 @@ export const getContactByIdController = async (req, res, next) => {
         });
     } catch (err) {
         next(err);
+        return;
     }
 };
 
@@ -63,6 +65,7 @@ export const createContactController = async (req, res, next) => {
         });
     } catch (err) {
         next(err);
+        return;
     }
 };
 
@@ -84,6 +87,7 @@ export const patchContactController = async (req, res, next) => {
         });
     } catch (err) {
         next(err);
+        return;
     }
 };
 
@@ -101,5 +105,6 @@ export const deleteContactController = async (req, res, next) => {
         res.status(204).send();
     } catch (err) {
         next(err);
+        return;
     }
 };

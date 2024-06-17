@@ -9,6 +9,7 @@ export const errorHandler = (err, req, res, next) => {
         });
         return;
     }
+    next(err);
 
     res.status(500).json({
         status: 500,

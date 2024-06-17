@@ -8,14 +8,14 @@ export const createContactSchema = Joi.object({
             'string.max': 'Username should have at most {#limit} characters',
             'any.required': 'Username is required',
         }),
-    phoneNumber: Joi.number().min(3).max(12).required()
+    phoneNumber: Joi.string().pattern(/^[\d\s\(\)\-]+$/).min(3).max(12).required()
         .messages({
             'string.base': 'Phone number should be a string',
             'string.min': 'Phone number should have at least {#limit} characters',
             'string.max': 'Phone number should have at most {#limit} characters',
             'any.required': 'Phone number is required',
         }),
-    email: Joi.string().email().required()
+    email: Joi.string().email({ tlds: { allow: true } }).required()
         .messages({
             'string.email': 'Email must be a valid email address',
             'any.required': 'Email is required',

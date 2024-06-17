@@ -12,8 +12,8 @@ router.use('/contacts/:contactId', validateId('contactId'));
 
 router.get('/contacts', ctrlWrapper(getContactsController));
 router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
-router.patch('/contacts/:contactId', validateBody(updateContactSchema), ctrlWrapper(patchContactController));
+router.patch('/contacts/:contactId', validateId(), validateBody(updateContactSchema), ctrlWrapper(patchContactController));
 router.post('/contacts', validateBody(createContactSchema), ctrlWrapper(createContactController));
-router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
+router.delete('/contacts/:contactId', validateId(), ctrlWrapper(deleteContactController));
 
 export default router;
