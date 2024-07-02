@@ -7,6 +7,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import indexRouter from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -25,6 +26,8 @@ export const setupServer = () => {
     );
     app.use('/contacts', contactsRouter);
     app.use('/', indexRouter);
+
+    app.use('/uploads', express.static(UPLOAD_DIR));
 
     app.use(cookieParser());
 

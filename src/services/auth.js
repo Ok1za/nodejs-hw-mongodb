@@ -7,10 +7,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { SessionsCollection } from "../db/models/session.js";
 import { randomBytes } from "crypto";
-import { FIFTEEN_MINUTES, THIRTY_DAYS } from "../constants/index.js";
+import { FIFTEEN_MINUTES, TEMPLATES_DIR, THIRTY_DAYS } from "../constants/index.js";
 import { env } from '../utils/env.js';
 import { sendEmail } from "../utils/sendMail.js";
-import { SMTP, TEMPLATES_DIR } from "../constants/constants.js";
+import { SMTP } from "../constants/constants.js";
 
 export const registerUser = async (payload) => {
     const user = await UsersCollection.findOne({ email: payload.email });
@@ -131,4 +131,31 @@ export const sendResetToken = async (email) => {
         subject: 'Reset your password',
         html,
     });
+};
+
+export const resetPassword = async (payload) => {
+    let entries;
+
+    try {
+        entries = jwt.verify(payload.token, env('JWT_SECRET'));
+    } catch (err) {
+        if (err instanceof Error) throw createHttpError(401, 'Token is expired or invalid.');
+        throw err;
+    }
+
+    const user = await UsersCollection.findOne({
+        email: entries.email,
+        _id: entries.sub,
+    });
+
+    if (!user) {
+        throw createHttpError(404, 'User not found!');
+    }
+
+    const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+    await UsersCollection.updateOne(
+        { _id: user._id },
+        { password: encryptedPassword },
+    );
 };
