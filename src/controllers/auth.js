@@ -2,13 +2,19 @@ import { THIRTY_DAYS } from "../constants/index.js";
 import { loginUser, logoutUser, refreshUsersSession, registerUser, resetPassword, sendResetToken } from "../services/auth.js";
 
 export const registerUserController = async (req, res) => {
-    const user = await registerUser(req.body);
+    try {
+        const user = await registerUser(req.body);
 
-    res.json({
-        status: 201,
-        message: 'Successfully registered a user!',
-        data: user,
-    });
+        res.status(201).json({
+            message: 'Successfully registered a user!',
+            data: user,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error registering user!',
+            error: error.message,
+        });
+    }
 };
 
 export const loginUserController = async (req, res) => {
