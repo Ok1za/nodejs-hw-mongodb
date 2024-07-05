@@ -2,6 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { TEMP_UPLOAD_DIR, UPLOAD_DIR } from '../constants/index.js';
 import { env } from './env.js';
+import { SMTP } from '../constants/constants.js';
 
 export const saveFileToUploadDir = async (file) => {
     await fs.rename(
@@ -9,5 +10,5 @@ export const saveFileToUploadDir = async (file) => {
         path.join(UPLOAD_DIR, file.filename),
     );
 
-    return `${env('SMTP.APP_DOMAIN')}/uploads/${file.filename}`;
+    return `${env(SMTP.APP_DOMAIN)}/uploads/${file.filename}`;
 };

@@ -98,7 +98,7 @@ export const sendResetToken = async (email) => {
             sub: user._id,
             email,
         },
-        env('SMTP.JWT_SECRET'),
+        env(SMTP.JWT_SECRET),
         {
             expiresIn: '15m',
         },
@@ -116,7 +116,7 @@ export const sendResetToken = async (email) => {
 
     const html = template({
         name: user.name,
-        link: `${env('SMTP.APP_DOMAIN')}/reset-password?token=${resetToken}`,
+        link: `${env(SMTP.APP_DOMAIN)}/reset-password?token=${resetToken}`,
     });
 
     await sendEmail({
@@ -131,7 +131,7 @@ export const resetPassword = async ({ token, password }) => {
     let entries;
 
     try {
-        entries = jwt.verify(token, env('SMTP.JWT_SECRET'));
+        entries = jwt.verify(token, env(SMTP.JWT_SECRET));
     } catch (err) {
         if (err instanceof Error) throw createHttpError(401, 'Token is expired or invalid.');
         throw err;
