@@ -29,7 +29,7 @@ const contactSchema = new Schema(
             required: true,
         },
         photo: {
-            type: String
+            type: String,
         },
     },
     {

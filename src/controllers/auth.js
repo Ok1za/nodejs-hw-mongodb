@@ -6,11 +6,13 @@ export const registerUserController = async (req, res) => {
         const user = await registerUser(req.body);
 
         res.status(201).json({
+            status: 201,
             message: 'Successfully registered a user!',
             data: user,
         });
     } catch (error) {
         res.status(500).json({
+            status: 500,
             message: 'Error registering user!',
             error: error.message,
         });
@@ -24,12 +26,13 @@ export const loginUserController = async (req, res) => {
         httpOnly: true,
         expires: new Date(Date.now() + THIRTY_DAYS),
     });
+
     res.cookie('sessionId', session._id, {
         httpOnly: true,
         expires: new Date(Date.now() + THIRTY_DAYS),
     });
 
-    res.json({
+    res.status(200).json({
         status: 200,
         message: 'Successfully logged in an user!',
         data: {
@@ -43,6 +46,7 @@ const setupSession = (res, session) => {
         httpOnly: true,
         expires: new Date(Date.now() + THIRTY_DAYS),
     });
+
     res.cookie('sessionId', session._id, {
         httpOnly: true,
         expires: new Date(Date.now() + THIRTY_DAYS),
@@ -57,7 +61,7 @@ export const refreshUserSessionController = async (req, res) => {
 
     setupSession(res, session);
 
-    res.json({
+    res.status(200).json({
         status: 200,
         message: 'Successfully refreshed a session!',
         data: {
@@ -78,17 +82,25 @@ export const logoutUserController = async (req, res) => {
 };
 
 export const sendResetEmailController = async (req, res) => {
-    await sendResetToken(req.body.email);
-    res.json({
-        message: 'Reset password email was successfully sent!',
-        status: 200,
-        data: {},
-    });
+    try {
+        await sendResetToken(req.body.email);
+        res.status(200).json({
+            message: 'Reset password email was successfully sent!',
+            status: 200,
+            data: {},
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to send the email, please try again later.',
+            status: 500,
+            error: error.message,
+        });
+    }
 };
 
 export const resetPasswordController = async (req, res) => {
     await resetPassword(req.body);
-    res.json({
+    res.status(200).json({
         message: 'Password has been successfully reset.',
         status: 200,
         data: {},

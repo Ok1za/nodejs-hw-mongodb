@@ -1,7 +1,8 @@
-export const notFoundHandler = async (req, res) => {
+export const notFoundHandler = async (req, res, next) => {
     res.status(404).json({
         status: 404,
         message: 'Route not found',
-        data: { message: 'Route not found' },
     });
+
+    next();
 };
