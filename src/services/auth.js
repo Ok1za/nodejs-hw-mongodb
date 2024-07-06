@@ -90,7 +90,7 @@ export const sendResetToken = async (email) => {
     const user = await UsersCollection.findOne({ email });
 
     if (!user) {
-        throw createHttpError(404, 'User not found');
+        throw createHttpError(404, 'User not found!');
     }
 
     const resetToken = jwt.sign(
@@ -120,10 +120,10 @@ export const sendResetToken = async (email) => {
     });
 
     await sendEmail({
-        from: env(SMTP.SMTP_FROM),
-        to: email,
-        subject: 'Reset your password',
         html,
+        to: email,
+        from:env(SMTP.SMTP_FROM),
+        subject: 'Reset your password',
     });
 };
 
