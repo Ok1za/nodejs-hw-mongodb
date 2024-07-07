@@ -94,10 +94,16 @@ export const patchContactController = async (req, res, next) => {
             photoUrl = await saveFileToCloudinary(photo);
         }
 
-        const updatedContact = await updateContact(contactId, userId, {
-            photo: photoUrl,
+        const updateData = {
             ...req.body,
-        });
+            userId,
+        };
+
+        if (photoUrl) {
+            updateData.photo = photoUrl;
+        }
+
+        const updatedContact = await updateContact(contactId, updateData);
 
         if (!updatedContact) {
             next(createHttpError(404, 'Contact not found'));
