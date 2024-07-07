@@ -52,10 +52,15 @@ export const loginUser = async ({ email, password }) => {
 
     await SessionsCollection.deleteOne({ userId: user._id });
 
-    return await SessionsCollection.create({
+    const session = await SessionsCollection.create({
         userId: user._id,
         ...createSession(),
     });
+
+    return {
+        accessToken: session.accessToken,
+        userId: user._id,
+    };
 };
 
 export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
